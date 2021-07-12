@@ -5,7 +5,7 @@ const config = require("../config");
 const router = express.Router();
 const handleResponse = require("./helpers/handleResponse");
 cloudinary.config(config.cloudinaryCreds);
-
+const TOKEN = require('../config')
 router.post("/image-upload", (req, res) => {
   let values = Object.values(req.files);
 
@@ -26,7 +26,7 @@ router.get('/recipe/:id', (req, res) => {
   axios({
     url: `https://api.spoonacular.com/recipes/${params.id}/information`,
     params: {
-      apiKey: 'ae8e71d80acd4e2a8028b74af00ac94d',
+      apiKey: TOKEN.apiKey,
       id: 'id',
     },
   })
@@ -42,7 +42,7 @@ router.get('/ingredients', (req, res) => {
   axios({
     url: `https://api.spoonacular.com/food/ingredients/search?query=${query.query}`,
     params: {
-      apiKey: 'ae8e71d80acd4e2a8028b74af00ac94d',
+      apiKey: TOKEN.apiKey,
     },
   })
     .then((response) => {
