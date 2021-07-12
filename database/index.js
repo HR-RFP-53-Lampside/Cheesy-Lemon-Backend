@@ -12,19 +12,18 @@ db.once('open', () => {
 });
 
 const recipeSchema = new mongoose.Schema({
-  _id: Number,
+  recipeId: Number,
   recipeName: String,
   reviews: [
     {
-      reviewID: Number,
       recipeName: String,
       authorName: String,
       // eslint-disable-next-line no-useless-escape
       authorImageURL: { type: String, validate: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)}/ },
       headline: { type: String, maxLength: 50 },
       body: { type: String, maxLength: 1000 },
-      upvotes: { type: Number, min: 0 },
-      downvotes: { type: Number, min: 0 },
+      upvotes: { type: Number, min: 0, default: 0 },
+      downvotes: { type: Number, min: 0, default: 0 },
       comments: [{ authorName: String, body: String }],
       images: [
         {
