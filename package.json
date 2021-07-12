@@ -5,6 +5,9 @@
   "repository": "https://github.com/HR-RFP-53-Lampside/Cheesy-Lemon-Backend.git",
   "author": "Luka Petricic <lukapetricic@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon ./server/server.js"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "cloudinary": "^1.26.2",
