@@ -7,7 +7,10 @@ module.exports.addReview = (recipeId, review, cb) => {
     upsert: true, new: true, setDefaultsOnInsert: true, useFindAndModify: false,
   };
   Recipe.findOneAndUpdate(query, update, options, (error, res) => {
-    if (error) return;
+    if (error) {
+      cb(error);
+      return;
+    }
     const newReviewId = res.reviews[res.reviews.length - 1].id;
     cb(newReviewId);
   });
@@ -26,9 +29,42 @@ module.exports.upvoteReview = (recipeId, reviewId, cb) => {
   ).exec((err) => cb(err));
 };
 
+module.exports.deleteUpvoteReview = (recipeId, reviewId, cb) => {
+  Recipe.findOne({ recipeId })
+    .exec((err, recipe) => {
+      // eslint-disable-next-line no-underscore-dangle
+      const found = recipe.reviews.find((review) => review.id === reviewId);
+      found.upvotes -= 1;
+      // Validation (> 0) happening here
+      recipe.save()
+        .catch((error) => cb(error))
+        .then(() => cb());
+    });
+};
+
 module.exports.downvoteReview = (recipeId, reviewId, cb) => {
   Recipe.updateOne(
     { recipeId, 'reviews._id': reviewId },
     { $inc: { 'reviews.$.downvotes': 1 } },
+  ).exec((err) => cb(err));
+};
+
+module.exports.deleteDownvoteReview = (recipeId, reviewId, cb) => {
+  Recipe.findOne({ recipeId })
+    .exec((err, recipe) => {
+      // eslint-disable-next-line no-underscore-dangle
+      const found = recipe.reviews.find((review) => review.id === reviewId);
+      found.downvotes -= 1;
+      // Validation (> 0) happening here
+      recipe.save()
+        .catch((error) => cb(error))
+        .then(() => cb());
+    });
+};
+
+module.exports.addComment = (recipeId, reviewId, body, authorName, cb) => {
+  Recipe.updateOne(
+    { recipeId, 'reviews._id': reviewId },
+    { $push: { 'reviews.$.comments': { authorName, body } } },
   ).exec((err) => cb(err));
 };
