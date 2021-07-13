@@ -13,10 +13,8 @@ db.once('open', () => {
 
 const recipeSchema = new mongoose.Schema({
   recipeId: Number,
-  recipeName: String,
   reviews: [
     {
-      recipeName: String,
       authorName: String,
       // eslint-disable-next-line no-useless-escape
       authorImageURL: { type: String, validate: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)}/ },
