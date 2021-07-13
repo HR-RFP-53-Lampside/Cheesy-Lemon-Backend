@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 
-mongoose.connect(config.atlasCreds.url, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(config.atlasCreds.url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 // eslint-disable-next-line no-console

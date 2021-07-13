@@ -95,7 +95,16 @@ router.get('/recipe/:id', (req, res) => {
     },
   })
     .then((response) => {
-      handleResponse(res, 200, response.data);
+      const responseObj = {
+        title: response.data.title,
+        id: response.data.id,
+        summary: response.data.summary,
+        instructions: response.data.instructions,
+        extendedIngredients: response.data.extendedIngredients.map((item) => item.name),
+        image: response.data.image,
+        diets: response.data.diets,
+      };
+      handleResponse(res, 200, responseObj);
     })
     .catch((err) => {
       handleResponse(res, 400, err);
