@@ -12,7 +12,7 @@ router.get('/recipes', (req, res) => {
 //  Mock Ingredients
 //  const mainIngredients = ['pasta', 'potato'];
   const allIngredients = req.body.ingredients || mockIngredients;
-  console.log(allIngredients);
+  // console.log(allIngredients);
 
   const matchingRecipes = [];
   const promises = [];
@@ -33,7 +33,7 @@ router.get('/recipes', (req, res) => {
       })
         // eslint-disable-next-line no-loop-func
         .then((recipes) => {
-          //console.log(recipes.data.results);
+          // console.log(recipes.data.results);
           for (let j = 0; j < recipes.data.results.length; j++) {
             let haveAllIngredients = true;
             const recipeIngredients = recipes.data.results[j].missedIngredients;
@@ -41,7 +41,8 @@ router.get('/recipes', (req, res) => {
             for (let x = 0; x < recipeIngredients.length && haveAllIngredients; x++) {
               let currentIngredient = false;
               for (let y = 0; y < allIngredients.length && haveAllIngredients; y++) {
-                if (recipeIngredients[x].name.toLowerCase().includes(allIngredients[y].toLowerCase())) {
+                const ingredient = recipeIngredients[x].name.toLowerCase();
+                if (ingredient.includes(allIngredients[y].toLowerCase())) {
                   currentIngredient = true;
                   break;
                 }
