@@ -24,7 +24,6 @@ router.post('/image-upload', (req, res) => {
 });
 
 router.get('/recipes', (req, res) => {
-//  Mock Ingredients
   const allIngredients = req.body.ingredients || mockIngredients;
   const matchingRecipes = [];
   const promises = [];
