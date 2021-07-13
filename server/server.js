@@ -5,7 +5,6 @@ const formData = require('express-form-data');
 const databaseRoutes = require('./databaseRoutes');
 const apiRoutes = require('./apiRoutes');
 
-
 const app = express();
 const port = 8000;
 
