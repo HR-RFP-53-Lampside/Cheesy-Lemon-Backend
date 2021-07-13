@@ -5,6 +5,8 @@ const axios = require('axios');
 const Client = require('@veryfi/veryfi-sdk');
 const config = require('../config');
 const handleResponse = require('./helpers/handleResponse');
+const filterIngredients = require('./helpers/filterIngredients');
+const parseIngredients = require('./helpers/parseIngredients');
 const TOKEN = require('../config');
 
 const router = express.Router();
@@ -116,6 +118,19 @@ router.get('/ingredients', (req, res) => {
     .catch((err) => {
       handleResponse(res, 400, err);
     });
+});
+
+router.get('/ingredients-from-image', (req, res) => {
+  const {
+    // eslint-disable-next-line camelcase
+    client_id, client_secret, username, api_key,
+  } = TOKEN.veryfiCreds;
+  // eslint-disable-next-line camelcase
+  const veryfi_client = new Client(client_id, client_secret, username, api_key);
+  veryfi_client.process_document_url(req.query.url)
+    .then((result) => filterIngredients(result))
+    .then((filtered) => parseIngredients(filtered))
+    .then((parsed) => res.send(parsed));
 });
 
 module.exports = router;
