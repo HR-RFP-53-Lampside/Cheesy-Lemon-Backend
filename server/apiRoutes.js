@@ -21,7 +21,7 @@ router.get('/recipes', (req, res) => {
       axios({
         url: 'https://api.spoonacular.com/recipes/complexSearch',
         params: {
-          apiKey: 'c42a21f8ef924ce0a56976daa8bd437b',
+          apiKey: TOKEN.apiKey,
           // includeIngredients: mainIngredients[i],
           number: 100,
           fillIngredients: true,
