@@ -1,22 +1,22 @@
-const express = require("express");
-const cloudinary = require("cloudinary");
-const axios = require("axios");
-const config = require("../config");
+const express = require('express');
+const cloudinary = require('cloudinary');
+const axios = require('axios');
+const config = require('../config');
+const handleResponse = require('./helpers/handleResponse');
+const TOKEN = require('../config');
+
 const router = express.Router();
-const handleResponse = require("./helpers/handleResponse");
 cloudinary.config(config.cloudinaryCreds);
-const TOKEN = require('../config')
-router.post("/image-upload", (req, res) => {
+
+router.post('/image-upload', (req, res) => {
   let values = Object.values(req.files);
 
   if (Array.isArray(values[0])) {
-    eslint-disable-next-line prefer-destructuring
+    // eslint-disable-next-line prefer-destructuring
     values = values[0];
   }
 
-  const promises = values.map((image) =>
-    cloudinary.uploader.upload(image.path)
-  );
+  const promises = values.map((image) => cloudinary.uploader.upload(image.path));
 
   Promise.all(promises).then((results) => res.json(results));
 });
