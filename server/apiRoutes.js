@@ -1,6 +1,7 @@
 const express = require('express');
 const cloudinary = require('cloudinary');
 const axios = require('axios');
+const Client = require('@veryfi/veryfi-sdk');
 const config = require('../config');
 const handleResponse = require('./helpers/handleResponse');
 const TOKEN = require('../config');
@@ -8,7 +9,7 @@ const TOKEN = require('../config');
 const router = express.Router();
 cloudinary.config(config.cloudinaryCreds);
 
-router.post('/image-upload', (req, res) => {
+router.post('/image', (req, res) => {
   let values = Object.values(req.files);
 
   if (Array.isArray(values[0])) {
