@@ -63,8 +63,26 @@ module.exports.deleteDownvoteReview = (recipeId, reviewId, cb) => {
 };
 
 module.exports.addComment = (recipeId, reviewId, body, authorName, cb) => {
-  Recipe.updateOne(
-    { recipeId, 'reviews._id': reviewId },
-    { $push: { 'reviews.$.comments': { authorName, body } } },
-  ).exec((err) => cb(err));
+  const query = { recipeId, 'reviews._id': reviewId };
+  const update = { $push: { 'reviews.0.comments': { authorName, body } } };
+  const options = { upsert: true, new: true, useFindAndModify: false };
+
+  Recipe.findOneAndUpdate(query, update, options, (error, res) => {
+    if (error) {
+      cb(error);
+      return;
+    }
+    // eslint-disable-next-line no-underscore-dangle
+    const newCommentId = res.reviews.find((review) => review.id === reviewId).comments.pop()._id;
+    cb(newCommentId);
+  });
+};
+
+module.exports.deleteComment = (recipeId, reviewId, commentId, cb) => {
+  const query = { recipeId, 'reviews._id': reviewId };
+  const update = { $pull: { 'reviews.$.comments': { _id: commentId } } };
+
+  Recipe.updateOne(query, update, (error) => {
+    cb(error);
+  });
 };

@@ -19,49 +19,58 @@ router.get('/:recipeId/reviews', (req, res) => {
   });
 });
 
-router.post('/:recipeId/reviews/:reviewId/upvote', (req, res) => {
-  dbControllers.upvoteReview(req.params.recipeId, req.params.reviewId, (err) => {
-    if (err) {
-      res.status(400).send();
-    }
-    res.send();
-  });
+router.put('/:recipeId/reviews/:reviewId/upvote', (req, res) => {
+  const { recipeId, reviewId } = req.params;
+  const { active } = req.body;
+  if (!active) {
+    dbControllers.upvoteReview(recipeId, reviewId, (err) => {
+      if (err) {
+        res.status(400).send();
+      }
+      res.send();
+    });
+  } else {
+    dbControllers.deleteUpvoteReview(recipeId, reviewId, (err) => {
+      if (err) {
+        res.status(400).send();
+      }
+      res.send();
+    });
+  }
 });
 
-router.delete('/:recipeId/reviews/:reviewId/upvote', (req, res) => {
-  dbControllers.deleteUpvoteReview(req.params.recipeId, req.params.reviewId, (err) => {
-    if (err) {
-      res.status(400).send();
-    }
-    res.send();
-  });
-});
-
-router.post('/:recipeId/reviews/:reviewId/downvote', (req, res) => {
-  dbControllers.downvoteReview(req.params.recipeId, req.params.reviewId, (err) => {
-    if (err) {
-      res.status(400).send();
-    }
-    res.send();
-  });
-});
-
-router.delete('/:recipeId/reviews/:reviewId/downvote', (req, res) => {
-  dbControllers.deleteDownvoteReview(req.params.recipeId, req.params.reviewId, (err) => {
-    if (err) {
-      res.status(400).send();
-    }
-    res.send();
-  });
+router.put('/:recipeId/reviews/:reviewId/downvote', (req, res) => {
+  const { recipeId, reviewId } = req.params;
+  const { active } = req.body;
+  if (!active) {
+    dbControllers.downvoteReview(recipeId, reviewId, (err) => {
+      if (err) {
+        res.status(400).send();
+      }
+      res.send();
+    });
+  } else {
+    dbControllers.deleteDownvoteReview(recipeId, reviewId, (err) => {
+      if (err) {
+        res.status(400).send();
+      }
+      res.send();
+    });
+  }
 });
 
 router.post('/:recipeId/reviews/:reviewId/comment', (req, res) => {
+  const { recipeId, reviewId } = req.params;
   const { body, authorName } = req.body;
-  dbControllers.addComment(req.params.recipeId, req.params.reviewId, body, authorName, (err) => {
-    if (err) {
-      res.status(400).send();
-    }
-    res.send();
+  dbControllers.addComment(recipeId, reviewId, body, authorName, (id) => {
+    res.send(id);
+  });
+});
+
+router.delete('/:recipeId/reviews/:reviewId/comment/:commentId', (req, res) => {
+  const { recipeId, reviewId, commentId } = req.params;
+  dbControllers.deleteComment(recipeId, reviewId, commentId, (err) => {
+    res.send(err);
   });
 });
 
