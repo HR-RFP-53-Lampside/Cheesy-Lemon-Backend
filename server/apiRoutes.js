@@ -10,7 +10,7 @@ router.post("/image-upload", (req, res) => {
   let values = Object.values(req.files);
 
   if (Array.isArray(values[0])) {
-    eslint-disable-next-line prefer-destructuring
+    // eslint-disable-next-line prefer-destructuring
     values = values[0];
   }
 
@@ -31,7 +31,16 @@ router.get('/recipe/:id', (req, res) => {
     },
   })
     .then((response) => {
-      handleResponse(res, 200, response.data);
+      const responseObj = {
+        title: response.data.title,
+        id: response.data.id,
+        summary: response.data.summary,
+        instructions: response.data.instructions,
+        extendedIngredients: response.data.extendedIngredients.map((item) => item.name),
+        image: response.data.image,
+        diets: response.data.diets,
+      };
+      handleResponse(res, 200, responseObj);
     })
     .catch((err) => {
       handleResponse(res, 400, err);
