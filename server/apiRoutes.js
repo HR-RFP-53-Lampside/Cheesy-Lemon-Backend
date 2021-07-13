@@ -41,8 +41,9 @@ router.get('/recipes', (req, res) => {
             for (let x = 0; x < recipeIngredients.length && haveAllIngredients; x++) {
               let currentIngredient = false;
               for (let y = 0; y < allIngredients.length && haveAllIngredients; y++) {
-                if (recipeIngredients[x].name.includes(allIngredients[y])) {
+                if (recipeIngredients[x].name.toLowerCase().includes(allIngredients[y].toLowerCase())) {
                   currentIngredient = true;
+                  break;
                 }
               }
               if (!currentIngredient) {
