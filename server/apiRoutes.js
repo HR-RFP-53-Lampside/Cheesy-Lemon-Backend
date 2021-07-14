@@ -8,7 +8,6 @@ const TOKEN = require('../config');
 
 const router = express.Router();
 cloudinary.config(config.cloudinaryCreds);
-const mockIngredients = require('./mockIngredientsList');
 
 router.post('/image-upload', (req, res) => {
   let values = Object.values(req.files);
