@@ -36,9 +36,10 @@ module.exports.deleteUpvoteReview = (recipeId, reviewId, cb) => {
       const found = recipe.reviews.find((review) => review.id === reviewId);
       found.upvotes -= 1;
       // Validation (> 0) happening here
+      // console.log('found:', found);
       recipe.save()
-        .catch((error) => cb(error))
-        .then(() => cb());
+        .then(() => cb())
+        .catch((error) => cb(error));
     });
 };
 

@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
 const formData = require('express-form-data');
@@ -11,6 +12,7 @@ const port = 8000;
 app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors({ origin: 'http://localhost:4000', credentials: true }));
 app.use(formData.parse());
 app.use(morgan('dev'));
 app.use('/local', databaseRoutes);

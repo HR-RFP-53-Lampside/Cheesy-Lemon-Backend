@@ -5,7 +5,7 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: false }));
 
 router.post('/:recipeId/reviews', (req, res) => {
-  dbControllers.addReview(req.params.recipeId, req.body.review, (newId) => {
+  dbControllers.addReview(req.params.recipeId, req.body, (newId) => {
     res.send(newId);
   });
 });
