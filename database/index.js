@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 
-// mongoose.connect(config.atlasCreds.url, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(config.atlasCreds.url, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 // eslint-disable-next-line no-console
@@ -17,18 +17,21 @@ const recipeSchema = new mongoose.Schema({
     {
       authorName: String,
       // eslint-disable-next-line no-useless-escape
-      authorImageURL: { type: String, validate: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)}/ },
+      authorImageURL: String,
       headline: { type: String, maxLength: 50 },
       body: { type: String, maxLength: 1000 },
+      _createdAt: { type: Date, default: Date.now },
       upvotes: { type: Number, min: 0, default: 0 },
       downvotes: { type: Number, min: 0, default: 0 },
-      comments: [{ authorName: String, body: String }],
       images: [
+        // eslint-disable-next-line no-useless-escape
+        { type: String },
+      ],
+      comments: [
         {
-          // eslint-disable-next-line no-useless-escape
-          thumbnail: { type: String, validate: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)}/ },
-          // eslint-disable-next-line no-useless-escape
-          fullSize: { type: String, validate: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)}/ },
+          authorName: String,
+          body: String,
+          _createdAt: { type: Date, default: Date.now },
         },
       ],
     },

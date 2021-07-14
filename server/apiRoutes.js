@@ -7,7 +7,7 @@ const config = require('../config');
 const handleResponse = require('./helpers/handleResponse');
 const filterIngredients = require('./helpers/filterIngredients');
 const parseIngredients = require('./helpers/parseIngredients');
-const TOKEN = require('../config');
+// const TOKEN = require('../config');
 
 const router = express.Router();
 cloudinary.config(config.cloudinaryCreds);
@@ -27,15 +27,17 @@ router.post('/image', (req, res) => {
 
 router.get('/recipes', (req, res) => {
   const allIngredients = req.body.ingredients;
+  const { diet } = req.body;
   const matchingRecipes = [];
   const ingredientsQuery = allIngredients.join(',');
   axios({
     url: 'https://api.spoonacular.com/recipes/complexSearch',
     params: {
-      apiKey: TOKEN.apiKey,
+      apiKey: config.spoonacularCreds.api_key,
       includeIngredients: ingredientsQuery,
       number: 20,
       ignorePantry: true,
+      diet,
     },
   })
     .then((recipes) => {
@@ -49,19 +51,18 @@ router.get('/recipes', (req, res) => {
       }
       res.end(JSON.stringify(matchingRecipes));
     })
-    .catch((err) => {
-      console.error(err);
+    .catch(() => {
       res.status(500);
       res.end();
     });
 });
 
-router.get('/recipe/:id', (req, res) => {
+router.get('/recipes/:id', (req, res) => {
   const { params } = req;
   axios({
     url: `https://api.spoonacular.com/recipes/${params.id}/information`,
     params: {
-      apiKey: TOKEN.apiKey,
+      apiKey: config.spoonacularCreds.api_key,
       id: 'id',
     },
   })
@@ -81,15 +82,17 @@ router.get('/recipe/:id', (req, res) => {
       handleResponse(res, 400, err);
     });
 });
-router.get('/ingredients', (req, res) => {
-  const { query } = req;
+
+router.get('/ingredients/:ingredientName/search', (req, res) => {
+  const { ingredientName } = req.params;
   axios({
-    url: `https://api.spoonacular.com/food/ingredients/search?query=${query.query}`,
+    url: `https://api.spoonacular.com/food/ingredients/search?query=${ingredientName}`,
     params: {
-      apiKey: TOKEN.apiKey,
+      apiKey: config.spoonacularCreds.api_key,
     },
   })
     .then((response) => {
+      console.log(response.data);
       handleResponse(res, 200, response.data);
     })
     .catch((err) => {
@@ -97,14 +100,16 @@ router.get('/ingredients', (req, res) => {
     });
 });
 
-router.get('/ingredients-from-image', (req, res) => {
+router.get('/ingredientsFromImage', (req, res) => {
+  const { imageUrl } = req.body;
+  console.log(req.body);
   const {
     // eslint-disable-next-line camelcase
     client_id, client_secret, username, api_key,
-  } = TOKEN.veryfiCreds;
+  } = config.veryfiCreds;
   // eslint-disable-next-line camelcase
   const veryfi_client = new Client(client_id, client_secret, username, api_key);
-  veryfi_client.process_document_url(req.query.url)
+  veryfi_client.process_document_url(imageUrl)
     .then((result) => filterIngredients(result))
     .then((filtered) => parseIngredients(filtered))
     .then((parsed) => res.send(parsed));
