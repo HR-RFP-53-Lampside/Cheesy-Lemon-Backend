@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const config = require('../config');
 
-mongoose.connect(config.atlasCreds.url, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(config.atlasCreds.url, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const db = mongoose.connection;
-// eslint-disable-next-line no-console
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  // eslint-disable-next-line no-console
-  console.log('Connection to DB successful!');
-});
+// const db = mongoose.connection;
+// // eslint-disable-next-line no-console
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', () => {
+//   // eslint-disable-next-line no-console
+//   console.log('Connection to DB successful!');
+// });
 
 const recipeSchema = new mongoose.Schema({
   recipeId: Number,
