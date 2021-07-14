@@ -13,6 +13,7 @@ db.once('open', () => {
 
 const recipeSchema = new mongoose.Schema({
   recipeId: Number,
+  favoriteCount: { type: Number, min: 0, default: 0 },
   reviews: [
     {
       authorName: String,

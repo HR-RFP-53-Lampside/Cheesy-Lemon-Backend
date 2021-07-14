@@ -4,6 +4,16 @@ const dbControllers = require('../database/controllers');
 const router = express.Router();
 router.use(express.urlencoded({ extended: false }));
 
+router.put('/:recipeId/favorite', (req, res) => {
+  const { active } = req.body;
+  dbControllers.addOrRemoveFavorite(req.params.recipeId, active, (message, err) => {
+    if (err) {
+      res.status(400).send();
+    }
+    res.send(message);
+  });
+});
+
 router.post('/:recipeId/reviews', (req, res) => {
   dbControllers.addReview(req.params.recipeId, req.body, (newId) => {
     res.send(newId);

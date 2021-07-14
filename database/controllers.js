@@ -1,5 +1,37 @@
 const Recipe = require('./index');
 
+module.exports.addOrRemoveFavorite = (recipeId, active, cb) => {
+  if (!active) {
+    const query = { recipeId };
+    const update = { $inc: { favoriteCount: 1 } };
+    const options = {
+      upsert: true, new: true, setDefaultsOnInsert: true, useFindAndModify: false,
+    };
+
+    Recipe.findOneAndUpdate(query, update, options, (error) => {
+      if (error) {
+        cb(error);
+        return;
+      }
+      cb('Success');
+    });
+  } else {
+    Recipe.findOne({ recipeId })
+      .exec((err, recipe) => {
+        if (!recipe) {
+          cb('Cannot remove favorite before it was added', 400);
+          return;
+        }
+        // eslint-disable-next-line no-param-reassign
+        recipe.favoriteCount -= 1;
+        // Validation (> 0) happening here
+        recipe.save()
+          .then(() => cb('Success'))
+          .catch((error) => cb(error));
+      });
+  }
+};
+
 module.exports.addReview = (recipeId, review, cb) => {
   const query = { recipeId };
   const update = { $push: { reviews: review } };

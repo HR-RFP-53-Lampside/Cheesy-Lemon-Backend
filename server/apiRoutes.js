@@ -92,7 +92,6 @@ router.get('/ingredients/:ingredientName/search', (req, res) => {
     },
   })
     .then((response) => {
-      console.log(response.data);
       handleResponse(res, 200, response.data);
     })
     .catch((err) => {
@@ -102,7 +101,6 @@ router.get('/ingredients/:ingredientName/search', (req, res) => {
 
 router.get('/ingredientsFromImage', (req, res) => {
   const { imageUrl } = req.body;
-  console.log(req.body);
   const {
     // eslint-disable-next-line camelcase
     client_id, client_secret, username, api_key,
