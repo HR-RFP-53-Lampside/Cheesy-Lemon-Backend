@@ -37,7 +37,7 @@ router.get('/recipes', (req, res) => {
       axios({
         url: 'https://api.spoonacular.com/recipes/complexSearch',
         params: {
-          apiKey: TOKEN.apiKey,
+          apiKey: config.spoonacularCreds.api_key,
           // includeIngredients: mainIngredients[i],
           number: 100,
           fillIngredients: true,
@@ -88,12 +88,12 @@ router.get('/recipes', (req, res) => {
     });
 });
 
-router.get('/recipe/:id', (req, res) => {
+router.get('/recipes/:id', (req, res) => {
   const { params } = req;
   axios({
     url: `https://api.spoonacular.com/recipes/${params.id}/information`,
     params: {
-      apiKey: TOKEN.apiKey,
+      apiKey: config.spoonacularCreds.api_key,
       id: 'id',
     },
   })
