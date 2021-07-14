@@ -28,7 +28,7 @@ router.post('/image', (req, res) => {
 router.get('/recipes', (req, res) => {
   const allIngredients = req.body.ingredients;
   const matchingRecipes = [];
-  let ingredientsQuery = allIngredients.join(',');
+  const ingredientsQuery = allIngredients.join(',');
   axios({
     url: 'https://api.spoonacular.com/recipes/complexSearch',
     params: {
