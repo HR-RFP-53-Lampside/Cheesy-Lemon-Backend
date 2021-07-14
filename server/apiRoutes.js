@@ -32,7 +32,6 @@ router.get('/recipes', (req, res) => {
       apiKey: TOKEN.apiKey,
       includeIngredients: ingredientsQuery,
       number: 20,
-      fillIngredients: true,
       ignorePantry: true,
     },
   })
