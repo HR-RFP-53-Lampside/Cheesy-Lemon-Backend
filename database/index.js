@@ -16,8 +16,6 @@ const recipeSchema = new mongoose.Schema({
   favoriteCount: { type: Number, min: 0, default: 0 },
   reviews: [
     {
-      authorName: String,
-      // eslint-disable-next-line no-useless-escape
       authorId: String,
       headline: { type: String, maxLength: 50 },
       body: { type: String, maxLength: 1000 },
@@ -25,7 +23,6 @@ const recipeSchema = new mongoose.Schema({
       upvotes: { type: Number, min: 0, default: 0 },
       downvotes: { type: Number, min: 0, default: 0 },
       images: [
-        // eslint-disable-next-line no-useless-escape
         { type: String },
       ],
       comments: [
