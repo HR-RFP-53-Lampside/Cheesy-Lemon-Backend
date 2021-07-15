@@ -25,7 +25,7 @@ router.post('/image', (req, res) => {
   Promise.all(promises).then((results) => res.json(results));
 });
 
-router.get('/recipes', (req, res) => {
+router.post('/recipes', (req, res) => {
   const allIngredients = req.body.ingredients;
   const { diet } = req.body;
   const matchingRecipes = [];
@@ -100,7 +100,7 @@ router.get('/ingredients/:ingredientName/search', (req, res) => {
 });
 
 router.get('/ingredientsFromImage', (req, res) => {
-  const { imageUrl } = req.body;
+  const { imageUrl } = req.query;
   const {
     // eslint-disable-next-line camelcase
     client_id, client_secret, username, api_key,

@@ -18,7 +18,7 @@ const recipeSchema = new mongoose.Schema({
     {
       authorName: String,
       // eslint-disable-next-line no-useless-escape
-      authorImageURL: String,
+      authorId: String,
       headline: { type: String, maxLength: 50 },
       body: { type: String, maxLength: 1000 },
       _createdAt: { type: Date, default: Date.now },
@@ -30,7 +30,7 @@ const recipeSchema = new mongoose.Schema({
       ],
       comments: [
         {
-          authorName: String,
+          authorId: String,
           body: String,
           _createdAt: { type: Date, default: Date.now },
         },
