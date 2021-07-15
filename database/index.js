@@ -13,11 +13,12 @@ db.once('open', () => {
 
 const recipeSchema = new mongoose.Schema({
   recipeId: Number,
+  favoriteCount: { type: Number, min: 0, default: 0 },
   reviews: [
     {
       authorName: String,
       // eslint-disable-next-line no-useless-escape
-      authorImageURL: String,
+      authorId: String,
       headline: { type: String, maxLength: 50 },
       body: { type: String, maxLength: 1000 },
       _createdAt: { type: Date, default: Date.now },
@@ -29,7 +30,7 @@ const recipeSchema = new mongoose.Schema({
       ],
       comments: [
         {
-          authorName: String,
+          authorId: String,
           body: String,
           _createdAt: { type: Date, default: Date.now },
         },
