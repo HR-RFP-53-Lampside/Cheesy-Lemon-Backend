@@ -48,6 +48,15 @@ module.exports.addReview = (recipeId, review, cb) => {
   });
 };
 
+module.exports.deleteReview = (recipeId, reviewId, cb) => {
+  const query = { recipeId };
+  const update = { $pull: { reviews: { _id: reviewId } } };
+
+  Recipe.updateOne(query, update, (error) => {
+    cb(error);
+  });
+};
+
 module.exports.getReviews = (recipeId, cb) => {
   Recipe.find({ recipeId })
     .select('reviews')
@@ -95,9 +104,9 @@ module.exports.deleteDownvoteReview = (recipeId, reviewId, cb) => {
     });
 };
 
-module.exports.addComment = (recipeId, reviewId, body, authorName, cb) => {
+module.exports.addComment = (recipeId, reviewId, body, authorId, cb) => {
   const query = { recipeId, 'reviews._id': reviewId };
-  const update = { $push: { 'reviews.0.comments': { authorName, body } } };
+  const update = { $push: { 'reviews.0.comments': { authorId, body } } };
   const options = { upsert: true, new: true, useFindAndModify: false };
 
   Recipe.findOneAndUpdate(query, update, options, (error, res) => {
@@ -118,4 +127,31 @@ module.exports.deleteComment = (recipeId, reviewId, commentId, cb) => {
   Recipe.updateOne(query, update, (error) => {
     cb(error);
   });
+};
+
+module.exports.countYummies = (userId, cb) => {
+  let yummieCount = 0;
+
+  const deepfindAllAuthorIdOccurances = (array, authorId) => {
+    array.forEach((item) => {
+      if (item.reviews.authorId === authorId) {
+        yummieCount += 1;
+      }
+
+      if (item.reviews.comments.length > 0) {
+        item.reviews.comments.forEach((comment) => {
+          if (comment.authorId === authorId) {
+            yummieCount += 1;
+          }
+        });
+      }
+    });
+  };
+
+  Recipe.aggregate([{ $unwind: '$reviews' }])
+    .then((result) => {
+      deepfindAllAuthorIdOccurances(result, userId);
+      cb({ yummieCount });
+    })
+    .catch((err) => cb(err));
 };
