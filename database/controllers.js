@@ -48,7 +48,6 @@ module.exports.addOrRemoveFavorite = (recipeId, active, cb) => {
 };
 
 module.exports.getSingleReview = (recipeId, reviewId, cb) => {
-  console.log(recipeId, reviewId);
   Recipe.findOne(
     { recipeId },
     {
