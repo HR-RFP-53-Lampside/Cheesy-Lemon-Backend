@@ -6,7 +6,8 @@
   "author": "Luka Petricic <lukapetricic@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon ./server/server.js"
+    "start": "nodemon ./server/server.js",
+    "start:prod" : "node ./server/server.js"
   },
   "dependencies": {
     "@veryfi/veryfi-sdk": "^1.1.2",
