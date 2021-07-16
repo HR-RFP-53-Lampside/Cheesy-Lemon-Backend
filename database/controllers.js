@@ -59,6 +59,7 @@ module.exports.getSingleReview = (recipeId, reviewId, cb) => {
       'reviews.images': 1,
       'reviews.authorId': 1,
       'reviews._createdAt': 1,
+      'reviews.comments': 1,
     },
   )
     .exec((review, res) => {
