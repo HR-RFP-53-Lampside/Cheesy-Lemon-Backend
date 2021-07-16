@@ -1,4 +1,19 @@
 const Recipe = require('./index');
+const decorateRecipes = require('../server/helpers/decorateRecipes');
+
+module.exports.getAllRecipes = (cb) => {
+  Recipe.find({})
+    .exec((err, result) => {
+      const formatted = result.map((recipe) => ({
+        recipeId: recipe.recipeId,
+        favoriteCount: recipe.favoriteCount,
+        reviewCount: recipe.reviews.length,
+      }));
+
+      decorateRecipes(formatted)
+        .then((decorated) => cb(decorated));
+    });
+};
 
 module.exports.addOrRemoveFavorite = (recipeId, active, cb) => {
   if (!active) {
