@@ -35,6 +35,13 @@ router.get('/:recipeId/reviews', (req, res) => {
   });
 });
 
+router.get('/:recipeId/reviews/:reviewId', (req, res) => {
+  const { recipeId, reviewId } = req.params;
+  dbControllers.getSingleReview(recipeId, reviewId, (review) => {
+    res.send(review);
+  });
+});
+
 router.delete('/:recipeId/reviews/:reviewId', (req, res) => {
   const { recipeId, reviewId } = req.params;
   dbControllers.deleteReview(recipeId, reviewId, () => {

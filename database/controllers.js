@@ -47,6 +47,25 @@ module.exports.addOrRemoveFavorite = (recipeId, active, cb) => {
   }
 };
 
+module.exports.getSingleReview = (recipeId, reviewId, cb) => {
+  Recipe.findOne(
+    { recipeId },
+    {
+      'reviews._id': reviewId,
+      'reviews.headline': 1,
+      'reviews.body': 1,
+      'reviews.upvotes': 1,
+      'reviews.downvotes': 1,
+      'reviews.images': 1,
+      'reviews.authorId': 1,
+      'reviews._createdAt': 1,
+    },
+  )
+    .exec((review, res) => {
+      cb(res.reviews[0]);
+    });
+};
+
 module.exports.addReview = (recipeId, review, cb) => {
   const query = { recipeId };
   const update = { $push: { reviews: review } };
