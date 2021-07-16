@@ -4,6 +4,12 @@ const dbControllers = require('../database/controllers');
 const router = express.Router();
 router.use(express.urlencoded({ extended: false }));
 
+router.get('/recipes', (req, res) => {
+  dbControllers.getAllRecipes((result) => {
+    res.send(result);
+  });
+});
+
 router.put('/:recipeId/favorite', (req, res) => {
   const { active } = req.body;
   dbControllers.addOrRemoveFavorite(req.params.recipeId, active, (message, err) => {
